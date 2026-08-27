@@ -1,0 +1,11 @@
+Item No,Date,Product Name,Category,Quantity,Unit Price (£),Total Value (£),Supplier,Storage Condition,Notes
+1,01/06/2026,Whole Milk (2L),Fresh Dairy,50,1.25,62.50,Arla Foods,Chilled 2–4°C,Daily delivery
+2,01/06/2026,Semi-Skimmed Milk (1L),Fresh Dairy,40,0.89,35.60,Arla Foods,Chilled 2–4°C,High turnover item
+3,01/06/2026,Salted Butter (250g),Butter & Spreads,30,1.75,52.50,Anchor,Chilled 2–4°C,Check best before
+4,01/06/2026,Greek Yoghurt (500g),Yoghurt,25,2.10,52.50,Fage,Chilled 2–4°C,Popular weekend item
+5,01/06/2026,Mature Cheddar (400g),Cheese,20,3.50,70.00,Cathedral City,Chilled 2–4°C,Vacuum sealed
+6,01/06/2026,Double Cream (300ml),Cream,15,1.65,24.75,Elmlea,Chilled 2–4°C,Short shelf life
+7,01/06/2026,Free Range Eggs (6 pack),Eggs,60,1.95,117.00,Happy Egg Co.,Cool dry place,Best seller
+8,01/06/2026,Mozzarella (125g),Cheese,18,1.20,21.60,Galbani,Chilled 2–4°C,Store in brine
+9,01/06/2026,Skimmed Milk (2L),Fresh Dairy,22,1.15,25.30,Cravendale,Chilled 2–4°C,Reorder if below 10
+10,01/06/2026,Crème Fraîche (200ml),Cream,12,1.45,17.40,Président,Chilled 2–4°C,Check seals on delivery
