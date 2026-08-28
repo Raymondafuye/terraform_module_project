@@ -1,41 +1,25 @@
-# COB — Cloud Operations Blueprint
-
-## What COB Is
-
-COB (Cloud Operations Blueprint) is an internal infrastructure provisioning platform built by the Platform Engineering team. It provides reusable Terraform modules that other engineering teams can consume to provision standardised AWS infrastructure — without writing raw resource blocks themselves.
-
-COB is not a collection of individual Terraform files for AWS resources. Each module is a meaningful infrastructure capability: a self-contained abstraction with clear inputs, outputs, and sensible defaults. Teams consume a module to get a fully configured, production-ready capability — not just a resource.
-
+# COB
+## What is COB 
+COB is an internal infrastructure provisioning platform built by the Platform Engineering team. It provides reusable Terraform modules that other engineering teams can consume to provision standardised AWS infrastructure  without writing raw resource blocks themselves.
 ---
-
 ## The Problem It Solves
-
-Standing up a data pipeline on AWS typically requires coordinating networking, storage, cataloguing, querying, compute, and IAM — each with its own Terraform resource blocks scattered across files. COB solves this by:
-
+Standing up a data pipeline on AWS typically requires coordinating networking, storage, cataloguing, querying, compute, and IAM  each with its own Terraform resource blocks scattered across files. COB solves this by:
 - Encapsulating each concern in a self-contained module with clear inputs and outputs
 - Letting each environment (`dev`, `stag`, `prod`) override only what it needs via a `.tfvars` file
 - Keeping cost-sensitive resources (e.g. NAT Gateways) configurable so staging doesn't pay for production-grade redundancy
-
 ---
-
 ## Network Architecture
 ![image alt](https://github.com/Raymondafuye/terraform_module_project/blob/56efbc15d90656a7fa5cb26ba4e6ca05520d99e8/myfiles/snowflakes-Page-6.jpg)
 
-
-> In `dev` and `stag`, `single_nat_gateway = true` — both private subnets share one NAT Gateway in AZ-A to reduce cost. In `prod`, each AZ has its own NAT Gateway for high availability.
-
+> In `dev` and `stag`, `single_nat_gateway = true`  both private subnets share one NAT Gateway in AZ-A to reduce cost. In `prod`, each AZ has its own NAT Gateway for high availability.
 ---
-
 ## Data Pipeline Architecture
 
 ![image alt](https://github.com/Raymondafuye/terraform_module_project/blob/56efbc15d90656a7fa5cb26ba4e6ca05520d99e8/myfiles/snowflakes-Page-7.jpg)
 
 > IAM: The Glue crawler assumes the `{workspace}-glue-crawler-role`, which has least-privilege `s3:GetObject`, `s3:PutObject`, and `s3:ListBucket` access scoped to the raw bucket ARN only.
-
 ---
-
 ## Available Capabilities
-
 | Module | What it provisions |
 |---|---|
 | `aws_vpc` | VPC, public/private subnets per AZ, Internet Gateway, NAT Gateway(s), route tables, security groups (web, RDS, ECS) |
@@ -155,8 +139,6 @@ All resource names are automatically prefixed with the Terraform workspace name 
 ---
 
 ## Known Limitations
-
-- There is no remote locking via DynamoDB; locking relies on the S3 native lock file feature, which requires Terraform 1.10+.
 - The `aws_s3_bucket` module uses `fileset` for uploads, which is evaluated at plan time. Large local directories will slow down `terraform plan`.
 - Glue crawler schedule is a raw cron string with no validation — an invalid expression will fail at apply time, not plan time.
 - All environments share the same AWS region (`us-east-1`). Cross-region deployments are not currently supported.
@@ -171,7 +153,7 @@ Each AZ gets one public and one private subnet. Public subnets host internet-fac
 
 ### 2. `single_nat_gateway` flag for cost control
 
-In production, each private subnet routes outbound traffic through its own NAT Gateway and Elastic IP — one per AZ — so that an AZ failure doesn't take down outbound connectivity for the others. In staging and dev, `single_nat_gateway = true` collapses this to one shared NAT Gateway and one EIP, cutting NAT costs significantly for non-production workloads where high availability is not required.
+In production, each private subnet routes outbound traffic through its own NAT Gateway and Elastic IP  one per AZ so that an AZ failure doesn't take down outbound connectivity for the others. In staging and dev, `single_nat_gateway = true` collapses this to one shared NAT Gateway and one EIP, cutting NAT costs significantly for non-production workloads where high availability is not required.
 
 ### 3. Per-environment `env/` folder with `.tfvars` files
 
@@ -189,6 +171,3 @@ EC2, ECS, and Glue all need IAM roles with different trust policies and permissi
 
 The same `aws_s3_bucket` module is called three times (app bucket, raw data bucket, Athena results bucket) with different inputs. Reuse avoids duplicating encryption, versioning, and public-access-block configuration. The optional `upload_source_dir` input lets the raw bucket seed itself with sample data at apply time without requiring a separate script.
 
-### 7. Data pipeline always-on in root `main.tf`
-
-The Glue and Athena modules are always instantiated. Environments that don't need the pipeline (e.g. staging) simply point the crawler at an empty prefix and leave `glue_crawler_schedule` empty, making it on-demand only. This avoids conditional `count`/`for_each` logic on modules, which complicates output references and state management.
