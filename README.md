@@ -18,6 +18,21 @@ Standing up a data pipeline on AWS typically requires coordinating networking, s
 
 ---
 
+## Network Architecture
+![image alt]
+
+> In `dev` and `stag`, `single_nat_gateway = true` — both private subnets share one NAT Gateway in AZ-A to reduce cost. In `prod`, each AZ has its own NAT Gateway for high availability.
+
+---
+
+## Data Pipeline Architecture
+
+![image alt]
+
+> IAM: The Glue crawler assumes the `{workspace}-glue-crawler-role`, which has least-privilege `s3:GetObject`, `s3:PutObject`, and `s3:ListBucket` access scoped to the raw bucket ARN only.
+
+---
+
 ## Available Capabilities
 
 | Module | What it provisions |
