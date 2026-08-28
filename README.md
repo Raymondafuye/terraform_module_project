@@ -19,7 +19,7 @@ Standing up a data pipeline on AWS typically requires coordinating networking, s
 ---
 
 ## Network Architecture
-![image alt](<img width="491" height="401" alt="snowflakes-Page-6" src="https://github.com/user-attachments/assets/2d1c25f7-44c7-416c-ac21-687440c89576" />)
+![image alt](https://github.com/Raymondafuye/terraform_module_project/blob/56efbc15d90656a7fa5cb26ba4e6ca05520d99e8/myfiles/snowflakes-Page-6.jpg)
 
 
 > In `dev` and `stag`, `single_nat_gateway = true` — both private subnets share one NAT Gateway in AZ-A to reduce cost. In `prod`, each AZ has its own NAT Gateway for high availability.
@@ -28,8 +28,7 @@ Standing up a data pipeline on AWS typically requires coordinating networking, s
 
 ## Data Pipeline Architecture
 
-![image alt](<img width="442" height="152" alt="snowflakes-Page-7" src="https://github.com/user-attachments/assets/1c403ac9-c3d7-4c1a-a87a-7e267694d56e" />
-)
+![image alt](https://github.com/Raymondafuye/terraform_module_project/blob/56efbc15d90656a7fa5cb26ba4e6ca05520d99e8/myfiles/snowflakes-Page-7.jpg)
 
 > IAM: The Glue crawler assumes the `{workspace}-glue-crawler-role`, which has least-privilege `s3:GetObject`, `s3:PutObject`, and `s3:ListBucket` access scoped to the raw bucket ARN only.
 
