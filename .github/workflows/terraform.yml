@@ -64,17 +64,16 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -var-file="env/${{ env.ENVIRONMENT }}/${{ env.ENVIRONMENT }}.tfvars" -no-color -out=tfplan 2>&1 | tee plan_output.txt
+          terraform plan -var-file="env/${{ env.ENVIRONMENT }}/${{ env.ENVIRONMENT }}.tfvars" -no-color -out=tfplan.tfout 2>&1 | tee plan_output.txt
           echo "exitcode=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
 
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
           name: tfplan-${{ env.ENVIRONMENT }}
-          path: tfplan
+          path: tfplan.tfout
           retention-days: 1
           
-
   manual-approval:
     name: Manual Approval
     runs-on: ubuntu-latest
