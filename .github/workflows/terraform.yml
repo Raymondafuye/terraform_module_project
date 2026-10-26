@@ -67,11 +67,12 @@ jobs:
           terraform plan -var-file="env/${{ env.ENVIRONMENT }}/${{ env.ENVIRONMENT }}.tfvars" -no-color -out=tfplan 2>&1 | tee plan_output.txt
           echo "exitcode=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
 
-      - name:  Upload Terraform Plan
+      - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:
           name: tfplan-${{ env.ENVIRONMENT }}
           path: tfplan
+          retention-days: 1
           
 
   manual-approval:
@@ -131,6 +132,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tfplan-${{ env.ENVIRONMENT }}
+          github-token: ${{ github.token }}
+          run-id: ${{ github.run_id }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
