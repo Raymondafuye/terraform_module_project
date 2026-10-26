@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Targets environment"
+        description: "Target environment"
         required: true
         default: "dev"
         type: choice
