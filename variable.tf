@@ -99,7 +99,7 @@ variable "athena_workgroup_name" {
   default = "analytics-workgroup"
 }
 
-variable "athena_workgroup_name1" {
+variable "athena_workgroup_name11" {
   type    = string
   default = "analytics-workgroup"
 }
