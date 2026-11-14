@@ -30,7 +30,7 @@ variable "single_nat_gateway" {
   default = false
 }
 
-variable "ssh_allowed_cidrs"{
+variable "ssh_allowed_cidrs" {
   description = "CIDR blocks allowed to SSH into web instances"
   type        = list(string)
   default     = []
